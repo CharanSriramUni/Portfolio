@@ -1,0 +1,55 @@
+<head>
+    <title>Charan's Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h2>Protected Note</h2>
+    <p>I've set some of my notes to be private but available with a password.</p>
+    <p>For most protected notes, the password is one word and is related to the content of the note.</p>
+    <p>If you guess the password correctly, I ask that you don't share it with others.</p>
+    <p>On the technical side of things, I'm basically spinning up sessions for each document that expire in an hour. I do it to avoid search engine indexing of passwords.</p>
+    <form id="form">
+        <strong>
+            <label for="password">Password</label>
+        </strong>
+        <input type="password" name="password" id="password">
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);
+
+        if (searchParams.get("retry") !== null) {
+            alert("Incorrect password. Try again.");
+        }
+
+        const form = document.getElementById("form");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const password = document.getElementById("password").value;
+
+            if (searchParams.get("file") !== null) {
+                const file = searchParams.get("file");
+                
+                fetch(`/session`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        file,
+                        pwd: password
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                }).then(response => {
+                    response.text().then(text => {
+                        if (text === "Incorrect password") {
+                            window.location.href = `/secure?file=${file}&retry=1`;
+                        } else {
+                            window.location.href = `/notes/${file}?pwd=${text}`;
+                        }
+                    })
+                })
+            }
+        });
+    </script>
+</body>

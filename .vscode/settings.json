@@ -1,0 +1,13 @@
+{
+    "rust-analyzer.cargo.features": [],
+    "rust-analyzer.discoverProjectCommand": null,
+    "remote.extensionKind": {
+        "pub.name": [
+            "ui"
+        ]
+    },
+    "rust-analyzer.rustc.source": null,
+    "rust-analyzer.linkedProjects": [
+        "/Users/charansriram/Desktop/Portfolio/Cargo.toml"
+    ],
+}
