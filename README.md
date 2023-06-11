@@ -1,8 +1,9 @@
 # My Portfolio
-Hey! This is the source code behind my personal site.
+Hey! This is the source code behind my personal site, charansriram.com.
 
 It's written mostly in Rust and uses Actix-Web as a web server. I chose to write it in Rust since
-I wanted to see how support for writing servers had developed and cause I like the support for enums.
+I wanted to see how support for writing servers has developed since I last used it, and I want to get
+more familiar with practical Rust for some other project ideas I'm working on.
 
 Styling is done using Water.css (hands-off styling). 
 
