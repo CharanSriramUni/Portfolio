@@ -1,5 +1,5 @@
 # My Portfolio
-Hey! This is the source code behind my personal site, charansriram.com.
+Hey! This is the source code behind my [personal site](charansriram.com).
 
 It's written mostly in Rust and uses Actix-Web as a web server. I chose to write it in Rust since
 I wanted to see how support for writing servers has developed since I last used it, and I want to get
