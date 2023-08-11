@@ -9,14 +9,14 @@ Styling is done using Water.css (hands-off styling).
 
 The server is containerized in a small Dockerfile and I've included the fly.toml file for reference. 
 
-The notes directory is meant to contain HTML pages for blog posts/notes. I've added a cool little feature
+Adding a /notes directory lets you serve HTML pages for blog posts/notes. I've added a cool little feature
 to "password" protect certain files- just add a "secure.json" file to the src folder in the following format:
 ```
 {
     "secure.filename.html": "password"
 }
 ```
-Prepending a file with "secure." and adding it to the notes folder/secure.json file lets you include weak
+Prepending a file with "secure." and adding it to both the notes folder & secure.json file lets you include weak
 "password" protected files with links that expire in an hour. It's just a fun way to 
 keep my notes accessible and reward those who can guess what passwords I'd pick. As a rule of thumb, 
 I try to make them one word long and related to the contents of the note/post.
