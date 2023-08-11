@@ -1,3 +1,4 @@
 /target
 .env
 secure.json
+/notes/secure.*
