@@ -11,7 +11,7 @@ const globalStyles = globalCss({
 });
 
 const Wrapper = styled('div', {
-    position: "absolute",
+    position: "fixed",
     left: 20,
     bottom: 20,
     zIndex: 10,
