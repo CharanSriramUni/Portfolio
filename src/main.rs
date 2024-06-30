@@ -41,12 +41,12 @@ struct NotesAuthInfo {
     pwd: String,
 }
 
-// Landing page
+// Landing page :D
 async fn greet() -> Result<fs::NamedFile> {
     Ok(fs::NamedFile::open("pages/index.html")?)
 }
 
-// My resume (Updated Jun 9, 2023)
+// My resume (Updated Jun 29, 2024)
 async fn resume() -> Result<fs::NamedFile> {
     Ok(fs::NamedFile::open("files/resume.pdf")?)
 }
@@ -57,6 +57,7 @@ async fn secure() -> Result<fs::NamedFile> {
 }
 
 // Handler for directory listing
+// Uses the custom renderer from the renderer module which in turn uses actix's fs::Directory
 #[get("")]
 async fn notes() -> HttpResponse {
     match custom_renderer(&fs::Directory::new(PathBuf::from("./"), PathBuf::from("./notes")), "/notes") {
@@ -67,6 +68,8 @@ async fn notes() -> HttpResponse {
     }
 }
 
+// Simple handler for password authentication
+// Just checks if the password is correct and creates/returns a "session" token that will get wiped in <= 1 hour
 async fn notes_auth(info: web::Json<NotesAuthInfo>) -> Result<String> {
     let file = info.file.clone();
     let pwd = info.pwd.clone();
@@ -98,18 +101,22 @@ async fn notes_handler(req: HttpRequest) -> Either<fs::NamedFile, Redirect> {
             if v.len() == 2 && v[0] == "pwd" {
                 let password = v[1];
 
-                // Checks password against hashmap
+                // Checks password against hashmap - assuming they have a password in their query string
                 if let Some(v) = PASSWORD_HASHES.lock().unwrap().get(file_name.unwrap()) {
                     if *v == password {
+                        // Read from disk and return the file - can technically be saved by the user at this point but who cares
                         let path: std::path::PathBuf = PathBuf::from(format!("./notes/{:}", req.match_info().get("filename").unwrap()));
                         return Either::Left(fs::NamedFile::open(path).unwrap())
                     } else {
+                        // Retry just alerts them that their password was wrong.
                         return Either::Right(Redirect::to(format!("/secure?file={:}&retry=1", file_name.unwrap())));
                     }
                 } else {
+                    // Retry just alerts them that their password was wrong.
                     return Either::Right(Redirect::to(format!("/secure?file={:}&retry=1", file_name.unwrap())));
                 }
             } else if v.len() == 1 && v[0] == "" {
+                // If they don't have the password in their query string, redirect them to the secure page
                 return Either::Right(Redirect::to(format!("/secure?file={:}", file_name.unwrap())));
             }
 
@@ -139,6 +146,7 @@ async fn main() -> std::io::Result<()> {
     }
 
     // Wipe the password map every hour to erase sessions
+    // Also prevents search engine indexing of password pages
     thread::spawn(move || {
         loop {
             thread::sleep(std::time::Duration::from_secs(60 * 60));

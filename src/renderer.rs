@@ -22,7 +22,6 @@ pub mod document_renderer {
     /**
      * Small custom renderer I modifed from the original source code for directory rendering in Actix-web
      * It just uses the Waters.css files for styling and adds some support for my session system
-     * 
      */
     pub fn custom_renderer(
         dir: &Directory,

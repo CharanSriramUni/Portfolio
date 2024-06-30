@@ -1,4 +1,5 @@
 /target
+/notes
 .env
 secure.json
-/notes
+.DS_Store
